@@ -10,7 +10,7 @@ use Garoevans\ComposerSym\Exception\ComposerException;
 
 class ComposerJson
 {
-  const COMPOSE_JSON_FILE = "composer.json";
+  const COMPOSER_JSON_FILE = "composer.json";
 
   /**
    * @var string
@@ -41,13 +41,17 @@ class ComposerJson
 
   /**
    * @param string $projectDir
+   * @param string $fileName
    *
    * @return string
    * @throws Exception\BadProjectDirectoryException
    */
-  public function getComposerJsonFile($projectDir)
+  public function getComposerJsonFile(
+    $projectDir,
+    $fileName = self::COMPOSER_JSON_FILE
+  )
   {
-    $composerJsonLocation = build_path($projectDir, self::COMPOSE_JSON_FILE);
+    $composerJsonLocation = build_path($projectDir, $fileName);
 
     if (!file_exists($composerJsonLocation)) {
       throw new BadProjectDirectoryException(
@@ -56,9 +60,9 @@ class ComposerJson
           "set the project directory with -d, or maybe you don't have a " .
           "%s file. We tried to locate the file at the following " .
           "location: '%s'",
-          self::COMPOSE_JSON_FILE,
+          $fileName,
           $projectDir,
-          self::COMPOSE_JSON_FILE,
+          $fileName,
           $composerJsonLocation
         )
       );
@@ -79,7 +83,7 @@ class ComposerJson
   {
     if (!is_object($this->parsedComposerJsonFile)) {
       throw new ComposerException(
-        sprintf("Failed reading %s.", self::COMPOSE_JSON_FILE)
+        sprintf("Failed reading your json composer file.")
       );
     }
 
