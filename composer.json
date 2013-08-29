@@ -1,0 +1,12 @@
+{
+  "require": {
+    "cubex/cubex": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Garoevans\\ComposerSym": "src/"
+    }
+  },
+  "bin": ["composer/bin/composer-sym", "composer/bin/composer-sym.bat"],
+  "minimum-stability": "dev"
+}
