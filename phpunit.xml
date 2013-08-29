@@ -1,0 +1,7 @@
+<phpunit bootstrap="phpunit.autoload.php">
+  <testsuites>
+    <testsuite name="Composer Sym">
+      <directory>./src/Garoevans/ComposerSym/Tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
