@@ -44,11 +44,31 @@ class ComposerSym extends CliCommand
       );
 
       if ($doSymlink) {
-        // TODO: look potential location
-        // TODO: Suggest potential location
-        // TODO: Fall back to user input
+        $linkToPotentialLocation = false;
+        $potentialLocation = build_path($this->homeDir, $package);
+        if (file_exists($potentialLocation)) {
+          $linkToPotentialLocation = UserPrompt::confirm(
+            sprintf("> Link to '%s'?", $potentialLocation)
+          );
+        }
+
+        if (!$linkToPotentialLocation) {
+          do {
+            if (isset($linkTo)) {
+              printf("> Directory '%s' does not exist.\n", $linkTo);
+            }
+            $linkTo = UserPrompt::prompt(
+              sprintf("> Enter full path to base directory for '%s'", $package)
+            );
+          } while (!file_exists($linkTo));
+        } else {
+          $linkTo = $linkToPotentialLocation;
+        }
+
         // TODO: Symlink location
         // TODO: Write to log file in user dir ~
+
+        echo "\n";
       }
     }
   }
