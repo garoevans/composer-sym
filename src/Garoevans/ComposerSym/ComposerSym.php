@@ -9,11 +9,18 @@ use Cubex\Cli\CliCommand;
 class ComposerSym extends CliCommand
 {
   /**
-   * @short d
+   * @short p
    * @valuerequired
    * @example /home/foo/bar/
    */
   public $projectDir = "";
+
+  /**
+   * @short d
+   * @valuerequired
+   * @example /home/
+   */
+  public $homeDir = "";
 
   /**
    * @var ComposerJson
@@ -24,6 +31,13 @@ class ComposerSym extends CliCommand
   {
     $this->setProjectDir($this->projectDir);
     $this->composerJson = ComposerJson::get($this->projectDir);
+
+    $this->setHomeDir($this->homeDir);
+
+    $composerJsonObj = $this->composerJson->getParsedComposerJsonFile();
+    foreach ($composerJsonObj->require as $package => $version) {
+      printf("> %s: %s\n", $package, $version);
+    }
   }
 
   /**
@@ -35,6 +49,20 @@ class ComposerSym extends CliCommand
       $this->projectDir = dirname(dirname(dirname(CUBEX_PROJECT_ROOT)));
     } else {
       $this->projectDir = $projectDir;
+    }
+  }
+
+  /**
+   * @param string $homeDir
+   */
+  private function setHomeDir($homeDir)
+  {
+    if ($homeDir === "") {
+      $this->homeDir = dirname(
+        dirname(dirname(dirname(dirname(CUBEX_PROJECT_ROOT))))
+      );
+    } else {
+      $this->homeDir = $homeDir;
     }
   }
 }
