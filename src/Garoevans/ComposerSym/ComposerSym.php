@@ -5,6 +5,7 @@
 namespace Garoevans\ComposerSym;
 
 use Cubex\Cli\CliCommand;
+use Cubex\Cli\UserPrompt;
 
 class ComposerSym extends CliCommand
 {
@@ -31,12 +32,24 @@ class ComposerSym extends CliCommand
   {
     $this->setProjectDir($this->projectDir);
     $this->composerJson = ComposerJson::get($this->projectDir);
-
     $this->setHomeDir($this->homeDir);
+
+    printf("\n> Starting to process composer packages.\n\n");
 
     $composerJsonObj = $this->composerJson->getParsedComposerJsonFile();
     foreach ($composerJsonObj->require as $package => $version) {
-      printf("> %s: %s\n", $package, $version);
+      $doSymlink = UserPrompt::confirm(
+        sprintf("> Would you like to symlink %s?", $package),
+        'y'
+      );
+
+      if ($doSymlink) {
+        // TODO: look potential location
+        // TODO: Suggest potential location
+        // TODO: Fall back to user input
+        // TODO: Symlink location
+        // TODO: Write to log file in user dir ~
+      }
     }
   }
 
