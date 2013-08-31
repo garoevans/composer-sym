@@ -73,6 +73,20 @@ class ComposerSym extends CliCommand
     }
   }
 
+  public function getGuessedProjectDir()
+  {
+    $this->setProjectDir("");
+
+    echo $this->projectDir;
+  }
+
+  public function getGuessedHomeDir()
+  {
+    $this->setHomeDir("");
+
+    echo $this->homeDir;
+  }
+
   /**
    * @param string $projectDir
    */
