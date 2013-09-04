@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+define('PHP_START', microtime(true));
+
+/**
+ **************************************
+ * Register The Composer Auto Loader  *
+ **************************************
+ */
+
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+  $autoLoader = require dirname(__DIR__) . '/vendor/autoload.php';
+} elseif(file_exists(dirname(__DIR__) . '/../../autoload.php')) {
+  $autoLoader = require dirname(__DIR__) . '/../../autoload.php';
+} else {
+  throw new Exception("Can't find composer autoloader.");
+}
+
+$argv[1] = sprintf("ComposerSym:%s", isset($argv[1]) ? $argv[1] : 'help');
+
+/**
+ * Initiate Cubex
+ * Cubex uses the document root to find the web root, so we set it here
+ */
+$_ENV['CUBEX_ENV'] = "cli";
+$_SERVER['DOCUMENT_ROOT'] = __DIR__;
+$cubex = new \Cubex\Loader($autoLoader);
+
+/**
+ * Pull in Cubex Configuration
+ */
+$configArray = \Cubex\Foundation\Config\ConfigGroup::fromArray(
+  parse_ini_file(dirname(__DIR__) . '/conf/defaults.ini', true)
+);
+
+$cubex->configure($configArray);
+
+/**
+ * Respond to Web Request (Cubex Returns \Cubex\Core\Http\Response
+ */
+$cubex->respondToCliRequest($argv);
