@@ -78,6 +78,14 @@ class ComposerSymLogFile implements \JsonSerializable
     return isset($this->objects[$key]);
   }
 
+  /**
+   * @return ComposerSymLogFileObject[]
+   */
+  public function getObjects()
+  {
+    return $this->objects;
+  }
+
   public function jsonSerialize()
   {
     return $this->objects;

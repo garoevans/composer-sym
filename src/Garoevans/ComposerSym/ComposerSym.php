@@ -73,6 +73,10 @@ class ComposerSym extends CliCommand
     $composerJsonObj = $this->composerJson->getParsedComposerJsonFile();
     foreach ($composerJsonObj->require as $package => $version) {
 
+      if ($package === "garoevans/composer-sym") {
+        continue;
+      }
+      
       $packageLocation = build_path($this->projectDir, $this->vendor, $package);
       if (! file_exists($packageLocation)) {
         continue;
@@ -115,6 +119,38 @@ class ComposerSym extends CliCommand
 
         unset($linkTo);
         echo "\n";
+      }
+    }
+
+    $log->writeLog();
+  }
+
+  /**
+   * Iterate over linked packages and allow you to revert them
+   */
+  public function unlink()
+  {
+    $this->setProjectDir($this->projectDir);
+    $this->composerJson = ComposerJson::get($this->projectDir);
+    $this->setHomeDir($this->homeDir);
+
+    $log = new ComposerSymLog(getenv('HOME'), $this->projectDir);
+
+    printf("\n> Starting to process linked packages.\n");
+
+    foreach($log->getLinkedPackages() as $linkedPackage) {
+      $doUnlink = UserPrompt::confirm(
+        sprintf("\n> Would you like to unlink %s?", $linkedPackage->package),
+        'n'
+      );
+
+      if ($doUnlink) {
+        rmdir($linkedPackage->location);
+        rename($linkedPackage->tempLocation, $linkedPackage->location);
+
+        printf("> %s unlinked", $linkedPackage->package);
+
+        $log->removePackage($linkedPackage->package);
       }
     }
 
