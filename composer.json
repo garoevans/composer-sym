@@ -28,6 +28,6 @@
       "Garoevans\\ComposerSym": "src/"
     }
   },
-  "bin": ["composer/bin/composer-sym", "composer/bin/composer-sym.bat"],
+  "bin": ["bin/composer-sym"],
   "minimum-stability": "dev"
 }
