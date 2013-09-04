@@ -6,6 +6,7 @@ namespace Garoevans\ComposerSym;
 
 use Cubex\Cli\CliCommand;
 use Cubex\Cli\UserPrompt;
+use Garoevans\ComposerSym\Log\ComposerSymLog;
 
 class ComposerSym extends CliCommand
 {
@@ -65,6 +66,8 @@ class ComposerSym extends CliCommand
     $this->composerJson = ComposerJson::get($this->projectDir);
     $this->setHomeDir($this->homeDir);
 
+    $log = new ComposerSymLog(getenv('HOME'));
+
     printf("\n> Starting to process composer packages.\n");
 
     $composerJsonObj = $this->composerJson->getParsedComposerJsonFile();
@@ -75,9 +78,13 @@ class ComposerSym extends CliCommand
         continue;
       }
 
+      if ($log->isPackageLinked($package)) {
+        continue;
+      }
+
       $doSymlink = UserPrompt::confirm(
         sprintf("\n> Would you like to symlink %s?", $package),
-        'y'
+        'n'
       );
 
       if ($doSymlink) {
@@ -91,26 +98,27 @@ class ComposerSym extends CliCommand
 
         // Move the existing package to a new temporary directory and symlink
         // to the local copy
-        $newPath = build_path(
+        $tempLocation = build_path(
           $this->projectDir,
           $this->vendor,
           $this->getTemporaryPackageName($package)
         );
 
-        rename($packageLocation, $newPath);
+        rename($packageLocation, $tempLocation);
         symlink($linkTo, $packageLocation);
 
         sprintf("> %s symlinked:", $package);
         sprintf(">> link: %s", $packageLocation);
         sprintf(">> target: %s", $linkTo);
 
-        // TODO: Write to log file in user dir ~
-
+        $log->addPackage($package, $packageLocation, $tempLocation);
 
         unset($linkTo);
         echo "\n";
       }
     }
+
+    $log->writeLog();
   }
 
   /**
@@ -190,7 +198,8 @@ class ComposerSym extends CliCommand
         sprintf(
           "> Enter full path to base directory for '%s': ",
           $package
-        )
+        ),
+        'n'
       );
     } while (!file_exists($linkTo));
 
@@ -206,8 +215,8 @@ class ComposerSym extends CliCommand
   {
     $packageParts = explode("/", $package);
     end($packageParts);
-    $packageParts[key($packageParts)] = self::TEMPORARY_PACKAGE_PREFIX;
-    $packageParts[key($packageParts)] .= current($packageParts);
+    $packageParts[key($packageParts)] = self::TEMPORARY_PACKAGE_PREFIX .
+      current($packageParts);
 
     return  implode("/", $packageParts);
   }
