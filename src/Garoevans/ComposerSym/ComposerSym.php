@@ -24,6 +24,13 @@ class ComposerSym extends CliCommand
   public $homeDir = "";
 
   /**
+   * @short v
+   * @valuerequired
+   * @example vendor
+   */
+  public $vendor = "vendor";
+
+  /**
    * @var ComposerJson
    */
   private $composerJson;

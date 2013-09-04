@@ -57,7 +57,7 @@ class ComposerJson
       throw new BadProjectDirectoryException(
         sprintf(
           "There was no %s file found in '%s'. Perhaps you need " .
-          "set the project directory with -d, or maybe you don't have a " .
+          "set the project directory with -p, or maybe you don't have a " .
           "%s file. We tried to locate the file at the following " .
           "location: '%s'",
           $fileName,
