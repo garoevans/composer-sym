@@ -10,6 +10,8 @@ use Cubex\Cli\UserPrompt;
 class ComposerSym extends CliCommand
 {
   /**
+   * The base directory of the project you want to use ComposerSym with.
+   *
    * @short p
    * @valuerequired
    * @example /home/foo/bar/
@@ -17,6 +19,10 @@ class ComposerSym extends CliCommand
   public $projectDir = "";
 
   /**
+   * We use the home directory to try and locate the existence of the package so
+   * that you don't have to tell us where it is. This doesn't usually need to be
+   * set.
+   *
    * @short d
    * @valuerequired
    * @example /home/
@@ -24,6 +30,9 @@ class ComposerSym extends CliCommand
   public $homeDir = "";
 
   /**
+   * If you've decided to change the name of composer's vendor directory use
+   * this param to set it.
+   *
    * @short v
    * @valuerequired
    * @example vendor
@@ -36,6 +45,19 @@ class ComposerSym extends CliCommand
   private $composerJson;
 
   public function execute()
+  {
+    $this->_help();
+  }
+
+  public function help()
+  {
+    $this->execute();
+  }
+
+  /**
+   * Run to search packages and link
+   */
+  public function link()
   {
     $this->setProjectDir($this->projectDir);
     $this->composerJson = ComposerJson::get($this->projectDir);
@@ -106,6 +128,9 @@ class ComposerSym extends CliCommand
     }
   }
 
+  /**
+   * Helper method to see what ComposerSym thinks your project directory is.
+   */
   public function getGuessedProjectDir()
   {
     $this->setProjectDir("");
