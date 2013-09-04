@@ -6,6 +6,7 @@ namespace Garoevans\ComposerSym;
 
 use Cubex\Cli\CliCommand;
 use Cubex\Cli\UserPrompt;
+use Garoevans\ComposerSym\Exception\ComposerSymException;
 use Garoevans\ComposerSym\Log\ComposerSymLog;
 
 class ComposerSym extends CliCommand
@@ -109,7 +110,14 @@ class ComposerSym extends CliCommand
         );
 
         rename($packageLocation, $tempLocation);
-        symlink($linkTo, $packageLocation);
+
+        if (! symlink($linkTo, $packageLocation)) {
+          rename($tempLocation, $packageLocation);
+          throw new ComposerSymException(
+            "Failed creating sym link, this could be a privileges issue. Try" .
+            "running the console with raised privileges."
+          );
+        }
 
         sprintf("> %s symlinked:", $package);
         sprintf(">> link: %s", $packageLocation);
