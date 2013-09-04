@@ -76,7 +76,7 @@ class ComposerSym extends CliCommand
       if ($package === "garoevans/composer-sym") {
         continue;
       }
-      
+
       $packageLocation = build_path($this->projectDir, $this->vendor, $package);
       if (! file_exists($packageLocation)) {
         continue;

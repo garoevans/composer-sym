@@ -1,7 +1,27 @@
 {
+  "name": "garoevans/composer-sym",
+  "description": "Symlink composer packages to local versions",
+  "keywords": [
+    "composer",
+    "sym",
+    "symlink"
+  ],
+  "homepage": "https://github.com/garoevans/composer-sym",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gareth Evans",
+      "email": "garoevans@gmail.com",
+      "role": "developer"
+    }
+  ],
+  "support": {
+    "email": "garoevans@gmail.com"
+  },
   "require": {
     "cubex/cubex": "*",
-    "phpunit/phpunit": "3.7.*"
+    "phpunit/phpunit": "3.7.*",
+    "php": ">=5.4"
   },
   "autoload": {
     "psr-0": {
