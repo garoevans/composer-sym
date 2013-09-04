@@ -66,7 +66,7 @@ class ComposerSym extends CliCommand
     $this->composerJson = ComposerJson::get($this->projectDir);
     $this->setHomeDir($this->homeDir);
 
-    $log = new ComposerSymLog(getenv('HOME'));
+    $log = new ComposerSymLog(getenv('HOME'), $this->projectDir);
 
     printf("\n> Starting to process composer packages.\n");
 
@@ -198,8 +198,7 @@ class ComposerSym extends CliCommand
         sprintf(
           "> Enter full path to base directory for '%s': ",
           $package
-        ),
-        'n'
+        )
       );
     } while (!file_exists($linkTo));
 

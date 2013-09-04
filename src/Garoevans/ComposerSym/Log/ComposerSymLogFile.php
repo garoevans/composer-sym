@@ -18,13 +18,14 @@ class ComposerSymLogFile implements \JsonSerializable
   public function __construct($data = array())
   {
     if (is_array($data) || is_object($data)) {
-      foreach ($data as $logFileObject) {
+      foreach ($data as $key => $logFileObject) {
         $this->addObject(
           new ComposerSymLogFileObject(
             $logFileObject->package,
             $logFileObject->location,
             $logFileObject->tempLocation
-          )
+          ),
+          $key
         );
       }
     }
@@ -42,38 +43,39 @@ class ComposerSymLogFile implements \JsonSerializable
 
   /**
    * @param ComposerSymLogFileObject $logFileObject
+   * @param string $key
    *
    * @return $this
    */
-  public function addObject(ComposerSymLogFileObject $logFileObject)
+  public function addObject(ComposerSymLogFileObject $logFileObject, $key)
   {
-    $this->objects[$logFileObject->package] = $logFileObject;
+    $this->objects[$key] = $logFileObject;
 
     return $this;
   }
 
   /**
-   * @param string $package
+   * @param string $key
    *
    * @return $this
    */
-  public function removeObject($package)
+  public function removeObject($key)
   {
-    if ($this->objectIsSet($package)) {
-      unset($this->objects[$package]);
+    if ($this->objectIsSet($key)) {
+      unset($this->objects[$key]);
     }
 
     return $this;
   }
 
   /**
-   * @param string $package
+   * @param string $key
    *
    * @return bool
    */
-  public function objectIsSet($package)
+  public function objectIsSet($key)
   {
-    return isset($this->objects[$package]);
+    return isset($this->objects[$key]);
   }
 
   public function jsonSerialize()

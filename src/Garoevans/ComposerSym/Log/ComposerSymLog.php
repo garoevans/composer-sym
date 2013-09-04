@@ -16,11 +16,14 @@ class ComposerSymLog
    */
   private $logFile;
 
+  private $key;
+
   const LOG_FILE_NAME = ".composersym";
 
-  public function __construct($logDir)
+  public function __construct($logDir, $projectDir)
   {
     $this->logFilePath = build_path($logDir, self::LOG_FILE_NAME);
+    $this->key = substr(md5($projectDir), 0, 6) . "_";
 
     if (! file_exists($this->logFilePath)) {
       touch($this->logFilePath);
@@ -58,7 +61,8 @@ class ComposerSymLog
         $package,
         $location,
         $tempLocation
-      )
+      ),
+      $this->getUniqueKey($package)
     );
 
     return $this;
@@ -71,7 +75,7 @@ class ComposerSymLog
    */
   public function removePackage($package)
   {
-    $this->logFile->removeObject($package);
+    $this->logFile->removeObject($this->getUniqueKey($package));
 
     return $this;
   }
@@ -88,7 +92,7 @@ class ComposerSymLog
    */
   public function isPackageLinked($package)
   {
-    return $this->logFile->objectIsSet($package);
+    return $this->logFile->objectIsSet($this->getUniqueKey($package));
   }
 
   /**
@@ -97,5 +101,10 @@ class ComposerSymLog
   private function canReadWrite()
   {
     return is_writable($this->logFilePath);
+  }
+
+  private function getUniqueKey($package)
+  {
+    return $this->key . $package;
   }
 }
