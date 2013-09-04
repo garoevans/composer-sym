@@ -5,7 +5,7 @@
 
 namespace Garoevans\ComposerSym\Exception;
 
-class ComposerSymException extends AbstractComposerSymException
+abstract class AbstractComposerSymException extends \Exception
 {
 
 }

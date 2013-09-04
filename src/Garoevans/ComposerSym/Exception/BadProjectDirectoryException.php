@@ -5,7 +5,7 @@
 
 namespace Garoevans\ComposerSym\Exception;
 
-class BadProjectDirectoryException extends ComposerSymException
+class BadProjectDirectoryException extends AbstractComposerSymException
 {
 
 }
