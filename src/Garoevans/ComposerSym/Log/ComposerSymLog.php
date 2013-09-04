@@ -96,6 +96,22 @@ class ComposerSymLog
   }
 
   /**
+   * @return ComposerSymLogFileObject[]
+   */
+  public function getLinkedPackages()
+  {
+    $objects = array();
+
+    foreach ($this->logFile->getObjects() as $packageKey => $package) {
+      if (starts_with($packageKey, $this->key)) {
+        $objects[] = $package;
+      }
+    }
+
+    return $objects;
+  }
+
+  /**
    * @return bool
    */
   private function canReadWrite()
