@@ -1,3 +1,0 @@
-METHOD=$1
-shift
-$(dirname $0)/../garoevans/composer-sym/bin/cubex --cubex-env=cli ComposerSym:$METHOD $@
