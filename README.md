@@ -1,6 +1,6 @@
 # Garoevans Composer Sym [![Build Status](https://travis-ci.org/garoevans/composer-sym.png)](https://travis-ci.org/garoevans/composer-sym)
 
-Current version: 0.7.10
+Current version: 0.7.11
 
 ## Usage
 
