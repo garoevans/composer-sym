@@ -119,9 +119,9 @@ class ComposerSym extends CliCommand
           );
         }
 
-        sprintf("> %s symlinked:", $package);
-        sprintf(">> link: %s", $packageLocation);
-        sprintf(">> target: %s", $linkTo);
+        printf("> %s symlinked:", $package);
+        printf(">> link: %s", $packageLocation);
+        printf(">> target: %s", $linkTo);
 
         $log->addPackage($package, $packageLocation, $tempLocation);
 
@@ -220,7 +220,8 @@ class ComposerSym extends CliCommand
 
     if (file_exists($potentialLocation)) {
       $linkToPotentialLocation = UserPrompt::confirm(
-        sprintf("> Link to '%s'?", $potentialLocation)
+        sprintf("> Link to '%s'?", $potentialLocation),
+        'y'
       );
     }
 
