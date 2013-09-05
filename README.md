@@ -1,6 +1,6 @@
 # Garoevans Composer Sym
 
-Current version: 0.7.9
+Current version: 0.7.10
 
 ## Usage
 
