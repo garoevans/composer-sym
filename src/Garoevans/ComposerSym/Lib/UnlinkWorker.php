@@ -25,6 +25,12 @@ class UnlinkWorker
         rmdir($linkedPackage->location);
         rename($linkedPackage->tempLocation, $linkedPackage->location);
 
+        // Sometimes rename leaves a copy of both directories, we double check
+        // that it's actually gone here and if not remove it.
+        if (file_exists($linkedPackage->tempLocation)) {
+          rmdir($linkedPackage->tempLocation);
+        }
+
         printf("> %s unlinked", $linkedPackage->package);
 
         $log->removePackage($linkedPackage->package);
