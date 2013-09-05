@@ -51,6 +51,7 @@ class ComposerSym extends CliCommand
 
   public function execute()
   {
+    $_REQUEST['__path__'] = "ComposerSym";
     $this->_help();
   }
 
