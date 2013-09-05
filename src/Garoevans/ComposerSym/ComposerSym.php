@@ -63,26 +63,25 @@ class ComposerSym extends CliCommand
    */
   public function link()
   {
-    $this->setProjectDir($this->projectDir);
-    $this->composerJson = ComposerJson::get($this->projectDir);
-    $this->setHomeDir($this->homeDir);
-
-    $log = new ComposerSymLog(getenv('HOME'), $this->projectDir);
+    $this->composerSymInit();
+    $log = $this->getComposerSymLog();
 
     printf("\n> Starting to process composer packages.\n");
 
     $composerJsonObj = $this->composerJson->getParsedComposerJsonFile();
     foreach ($composerJsonObj->require as $package => $version) {
-
+      // Don't try and link this project.
       if ($package === "garoevans/composer-sym") {
         continue;
       }
 
+      // Make sure the package actually exists in the vendor directory.
       $packageLocation = build_path($this->projectDir, $this->vendor, $package);
       if (! file_exists($packageLocation)) {
         continue;
       }
 
+      // If it's already linked, skip it.
       if ($log->isPackageLinked($package)) {
         continue;
       }
@@ -119,9 +118,9 @@ class ComposerSym extends CliCommand
           );
         }
 
-        printf("> %s symlinked:", $package);
-        printf(">> link: %s", $packageLocation);
-        printf(">> target: %s", $linkTo);
+        printf("> %s symlinked:\n", $package);
+        printf(">> link: %s\n", $packageLocation);
+        printf(">> target: %s\n", $linkTo);
 
         $log->addPackage($package, $packageLocation, $tempLocation);
 
@@ -138,11 +137,8 @@ class ComposerSym extends CliCommand
    */
   public function unlink()
   {
-    $this->setProjectDir($this->projectDir);
-    $this->composerJson = ComposerJson::get($this->projectDir);
-    $this->setHomeDir($this->homeDir);
-
-    $log = new ComposerSymLog(getenv('HOME'), $this->projectDir);
+    $this->composerSymInit();
+    $log = $this->getComposerSymLog();
 
     printf("\n> Starting to process linked packages.\n");
 
@@ -180,6 +176,21 @@ class ComposerSym extends CliCommand
     $this->setHomeDir("");
 
     echo $this->homeDir;
+  }
+
+  private function composerSymInit()
+  {
+    $this->setProjectDir($this->projectDir);
+    $this->composerJson = ComposerJson::get($this->projectDir);
+    $this->setHomeDir($this->homeDir);
+  }
+
+  /**
+   * @return ComposerSymLog
+   */
+  private function getComposerSymLog()
+  {
+    return new ComposerSymLog(getenv('HOME'), $this->projectDir);
   }
 
   /**
