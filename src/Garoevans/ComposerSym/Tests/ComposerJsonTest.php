@@ -5,7 +5,8 @@
 
 namespace Garoevans\ComposerSym\Tests;
 
-use Garoevans\ComposerSym\ComposerJson;
+
+use Garoevans\ComposerSym\Lib\ComposerJson;
 
 class ComposerJsonTest extends \PHPUnit_Framework_TestCase
 {
