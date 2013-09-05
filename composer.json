@@ -20,7 +20,6 @@
   },
   "require": {
     "cubex/cubex": "*",
-    "phpunit/phpunit": "3.7.*",
     "php": ">=5.4"
   },
   "autoload": {
