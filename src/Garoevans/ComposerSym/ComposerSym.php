@@ -7,6 +7,7 @@ namespace Garoevans\ComposerSym;
 use Cubex\Cli\CliCommand;
 use Cubex\Cli\UserPrompt;
 use Garoevans\ComposerSym\Exception\ComposerSymException;
+use Garoevans\ComposerSym\Lib\ComposerJson;
 use Garoevans\ComposerSym\Log\ComposerSymLog;
 
 class ComposerSym extends CliCommand
