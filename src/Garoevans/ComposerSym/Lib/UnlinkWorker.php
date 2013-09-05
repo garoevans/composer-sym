@@ -31,7 +31,7 @@ class UnlinkWorker
           rmdir($linkedPackage->tempLocation);
         }
 
-        printf("> %s unlinked", $linkedPackage->package);
+        printf("> %s unlinked\n", $linkedPackage->package);
 
         $log->removePackage($linkedPackage->package);
       }

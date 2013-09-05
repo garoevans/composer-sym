@@ -12,7 +12,7 @@ use Garoevans\ComposerSym\Log\ComposerSymLog;
 
 class LinkWorker
 {
-  private static $packageLocation;
+  private static $packageLocation = [];
 
   /**
    * @param ComposerSymLog  $log
@@ -84,15 +84,15 @@ class LinkWorker
    */
   private static function getPackageLocation(ComposerSym $composerSym, $package)
   {
-    if (self::$packageLocation === null) {
-      self::$packageLocation = build_path(
+    if (!array_key_exists($package, self::$packageLocation)) {
+      self::$packageLocation[$package] = build_path(
         $composerSym->projectDir,
         $composerSym->vendor,
         $package
       );
     }
 
-    return self::$packageLocation;
+    return self::$packageLocation[$package];
   }
 
   /**
