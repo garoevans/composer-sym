@@ -3,7 +3,7 @@
  * @author gareth.evans
  */
 
-namespace Garoevans\ComposerSym;
+namespace Garoevans\ComposerSym\Lib;
 
 use Garoevans\ComposerSym\Exception\BadProjectDirectoryException;
 use Garoevans\ComposerSym\Exception\ComposerException;
@@ -13,12 +13,16 @@ class ComposerJson
   const COMPOSER_JSON_FILE = "composer.json";
 
   /**
+   * Once loaded this will hold the encoded json string
+   *
    * @var string
    */
   private $composerJsonFileData;
 
   /**
-   * @var mixed
+   * Parsed json object
+   *
+   * @var object
    */
   private $parsedComposerJsonFile;
 
@@ -44,7 +48,7 @@ class ComposerJson
    * @param string $fileName
    *
    * @return string
-   * @throws Exception\BadProjectDirectoryException
+   * @throws BadProjectDirectoryException
    */
   public function getComposerJsonFile(
     $projectDir,
@@ -77,7 +81,7 @@ class ComposerJson
    * Throws an exception if the composer json data is invalid or does not have
    * any required packages.
    *
-   * @throws Exception\ComposerException
+   * @throws ComposerException
    */
   public function validateComposerJsonObject()
   {
